@@ -10,7 +10,7 @@ jobs:
   render_document:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/labordata/nlrb_cats/nlrb:1.1
+      image: ghcr.io/labordata/nlrb-cats/nlrb:1.1
     steps:
       - uses: actions/checkout@v2
       - name: build database
