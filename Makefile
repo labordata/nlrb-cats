@@ -1,8 +1,10 @@
-include frf.mk
-
+SHELL := /bin/bash
 YEARS = 1999 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011
 
 .PHONY : all
+all : nlrb
+
+include frf.mk
 
 nlrb : R_ACTION.csv R_BARGAINING_UNIT.csv R_BLOCK.csv			\
 	    R_BLOCK_CASES.csv R_CASE.csv R_CASE_CASE_GROUP.csv		\
@@ -72,5 +74,4 @@ R_%.csv : $(patsubst %,%_R_%.csv,$(YEARS))
 
 2011_%.xml : raw/R_2011.zip
 	unzip -p $< $*.xml > $@ 
-
 
