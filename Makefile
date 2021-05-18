@@ -21,9 +21,7 @@ nlrb.sqlite : R_ACTION.csv R_BARGAINING_UNIT.csv R_BLOCK.csv		\
 	    R_PRE_ELECT_RD_DECISION.csv R_PRE_ELECT_RD_ISSUES.csv	\
 	    R_REOPENED_CASE.csv R_TRANSFER_HISTORY.csv			\
 	    R_WITHDRAWAL.csv CATS-FRF-R.final.csv
-	for csv in $(basename $^); do \
-		csvsql --db sqlite:///$@ --table $$csv --insert $$csv.csv; \
-	done;
+	csvs-to-sqlite $^ $@
 
 R_%.csv : $(patsubst %,%_R_%.csv,$(YEARS))
 	csvstack $^ > $@
