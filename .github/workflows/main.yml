@@ -1,0 +1,27 @@
+name: Render documents
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  render_document:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/labordata/nlrb_cats/nlrb:1.1
+    steps:
+      - uses: actions/checkout@v2
+      - name: build database
+        run: make
+      - name: setup directory
+        run: |
+          mkdir public
+          mv nlrb.sqlite public
+      - name: Github Pages Deploy
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+           github_token: ${{ secrets.GITHUB_TOKEN }}
+           publish_dir: ./public

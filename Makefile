@@ -6,7 +6,7 @@ all : nlrb
 
 include frf.mk
 
-nlrb : R_ACTION.csv R_BARGAINING_UNIT.csv R_BLOCK.csv			\
+nlrb.sqlite : R_ACTION.csv R_BARGAINING_UNIT.csv R_BLOCK.csv		\
 	    R_BLOCK_CASES.csv R_CASE.csv R_CASE_CASE_GROUP.csv		\
 	    R_CASE_GROUP.csv R_CHALLENGE_ISSUE.csv			\
 	    R_CHALLENGE_TABULATION.csv R_CLOSED_CASE.csv		\
