@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  render_document:
+  build-database:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/labordata/nlrb-cats/nlrb:1.1
