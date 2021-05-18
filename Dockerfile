@@ -5,7 +5,7 @@ LABEL maintainer "Forest Gregg <fgregg@datamade.us>"
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
      make unzip \
-  && apt-get clean \
+  && apt-get clean
 
 RUN mkdir /app
 WORKDIR /app
