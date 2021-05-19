@@ -29,7 +29,7 @@ nlrb.sqlite : R_ACTION.csv R_BLOCK.csv R_BLOCK_CASES.csv R_CASE.csv	\
 
 # stack, remove duplicate rows, and lowercase field names
 R_%.csv : $(patsubst %,%_R_%.csv,$(YEARS))
-	csvstack $^ | awk 'NR<3{print $0;next}{print $0| "sort -r"}' | uniq | awk 'NR==1{$$0=tolower($$0)}1' > $@
+	csvstack $^ | awk 'NR==1{$$0=tolower($$0)}1' > $@
 
 %.csv : %.xml.utf8
 	xml2csv --input $< --output $@ --tag "row"
