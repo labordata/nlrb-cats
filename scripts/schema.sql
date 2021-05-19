@@ -30,27 +30,6 @@ CREATE TABLE IF NOT EXISTS "action" (
   "action_control" INTEGER,
   FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)  
 );
-CREATE TABLE IF NOT EXISTS "bargaining_unit" (
-"r_case_number" TEXT,
-  "case_type" TEXT,
-  "status" TEXT,
-  "nlrb_office_id" INTEGER,
-  "docket_num" INTEGER,
-  "inquiry_id" TEXT,
-  "case_name" TEXT,
-  "date_filed" TEXT,
-  "hearing_target_date" TEXT,
-  "election_target_date" TEXT,
-  "employer_on_petition" TEXT,
-  "petitioner_on_petition" TEXT,
-  "union_involved_on_petition" TEXT,
-  "intervenor_on_petition" TEXT,
-  "self_certification" TEXT,
-  "post_elect_self_cert" TEXT,
-  "naics_code" INTEGER,
-  "num_employees_requested" INTEGER,
-  "description_requested" TEXT
-);
 CREATE TABLE IF NOT EXISTS "block" (
   "r_case_number" TEXT,
   "unit_id" TEXT,
