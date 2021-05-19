@@ -2,7 +2,7 @@ FRF_YEARS =2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010
 
 .INTERMEDIATE : $(patsubst %,%_CATS-FRF-R.final.csv,$(FRF_YEARS))
 CATS-FRF-R.final.csv : $(patsubst %,%_CATS-FRF-R.final.csv,$(FRF_YEARS))
-	csvstack $^ | awk 'NR<3{print $0;next}{print $0| "sort -r"}' | uniq | awk 'NR==1{$$0=tolower($$0)}1' > $@
+	csvstack $^ | awk 'NR==1{$$0=tolower($$0)}1' > $@
 
 %_CATS-FRF-R.final.xml : raw/CATS-FRF-R-%.final.zip
 	unzip -p $< CATS-FRF-R-$$(( $* - 1)).final.xml > $@
