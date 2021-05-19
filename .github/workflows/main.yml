@@ -1,4 +1,4 @@
-name: Render documents
+name: Build database
 
 on:
   push:
@@ -10,31 +10,17 @@ jobs:
   build-database:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/labordata/nlrb-cats/nlrb:1.4
+      image: ghcr.io/labordata/nlrb-cats/nlrb:1.5
     steps:
       - uses: actions/checkout@v2
       - name: build database
         run: |
-          make -j 4  R_ACTION.csv R_BARGAINING_UNIT.csv R_BLOCK.csv     \
-            R_BLOCK_CASES.csv R_CASE.csv R_CASE_CASE_GROUP.csv		\
-            R_CASE_GROUP.csv R_CHALLENGE_ISSUE.csv			\
-            R_CHALLENGE_TABULATION.csv R_CLOSED_CASE.csv		\
-            R_DISMISSAL.csv R_ELECTION.csv R_ELECTION_TALLY.csv		\
-            R_ELECT_AGREEMENT.csv R_ELECT_CERTIFICATION.csv		\
-            R_ELECT_SCHEDULED.csv R_ELECT_VOTES_FOR.csv			\
-            R_IMPACT_CATEGORY.csv R_OBJECTION_ISSUE.csv			\
-            R_PARTICIPANT.csv R_PART_VARIANT.csv			\
-            R_POST_ELECT_BOARD_ACT.csv R_POST_ELECT_HEARING.csv		\
-            R_POST_ELECT_RD_ACT.csv R_PRE_ELECT_BOARD_ACT.csv		\
-            R_PRE_ELECT_HEARING.csv R_PRE_ELECT_RD_BB.csv		\
-            R_PRE_ELECT_RD_DECISION.csv R_PRE_ELECT_RD_ISSUES.csv	\
-            R_REOPENED_CASE.csv R_TRANSFER_HISTORY.csv			\
-            R_WITHDRAWAL.csv CATS-FRF-R.final.csv
-          make nlrb.sqlite
+          make -j 4 nlrb.sqlite
       - name: setup directory
         run: |
           mkdir public
-          mv nlrb.sqlite public
+          zip nlrb.sqlite.zip nlrb.sqlite
+          mv nlrb.sqlite.zip public
       - name: Github Pages Deploy
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         uses: peaceiris/actions-gh-pages@v3
