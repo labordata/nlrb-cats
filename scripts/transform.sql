@@ -32,8 +32,15 @@ from r_election;
 
 
 insert into action
+(r_case_number, unit_id, action_sequence, recurrence, action_table_code,
+ action_field_code, action_date, date_entered, action_control)
 select distinct *
 from r_action ;
+
+
+insert into bargaining_unit
+select distinct *
+from r_bargaining_unit ;
 
 
 insert into block
@@ -85,7 +92,6 @@ insert into elect_scheduled
 select distinct *
 from r_elect_scheduled ;
 
-/* insert into frequently_requested_fielddistinct s        select * from cats-frf-r.final        ; */
 insert into election_tally
 select *
 from r_election_tally
@@ -118,6 +124,11 @@ select distinct *
 from r_participant
 group by r_case_number,
 	 participant_id ;
+
+
+insert into part_variant
+select distinct *
+from r_part_variant;
 
 
 insert into post_elect_board_act
@@ -230,6 +241,12 @@ drop table r_objection_issue ;
 
 
 drop table r_participant ;
+
+
+drop table r_part_variant ;
+
+
+drop table r_bargaining_unit ;
 
 
 drop table r_post_elect_board_act ;

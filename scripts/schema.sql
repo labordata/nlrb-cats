@@ -18,8 +18,23 @@ CREATE TABLE IF NOT EXISTS "nlrb_case" (
   "num_employees_requested" INTEGER,
   "description_requested" TEXT
 );
-CREATE TABLE IF NOT EXISTS "action" (
+CREATE TABLE IF NOT EXISTS "bargaining_unit" (
 "r_case_number" TEXT,
+  "unit_id" TEXT,
+  "bargaining_unit_code" TEXT,
+  "bargaining_unit_scope" TEXT,
+  "num_employees_determined" INTEGER,
+  "unit_city" TEXT,
+  "unit_state" TEXT,
+  "unit_county" INTEGER,
+  "description_determined" TEXT,
+  PRIMARY KEY (r_case_number, unit_id),
+  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)
+);
+
+CREATE TABLE IF NOT EXISTS "action" (
+  "action_id" INTEGER PRIMARY KEY AUTOINCREMENT,
+  "r_case_number" TEXT,
   "unit_id" TEXT,
   "action_sequence" INTEGER,
   "recurrence" INTEGER,
@@ -28,7 +43,7 @@ CREATE TABLE IF NOT EXISTS "action" (
   "action_date" TEXT,
   "date_entered" TEXT,
   "action_control" INTEGER,
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)  
+  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id)  
 );
 CREATE TABLE IF NOT EXISTS "block" (
   "r_case_number" TEXT,
@@ -41,7 +56,7 @@ CREATE TABLE IF NOT EXISTS "block" (
   "reqproc_board_party" TEXT,
   "reqproc_board_deter_date" TEXT,
   "reqproc_board_deter" TEXT,
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)    
+  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id)    
 );
 CREATE TABLE IF NOT EXISTS "block_cases" (
 "r_case_number" TEXT,
@@ -53,7 +68,7 @@ CREATE TABLE IF NOT EXISTS "block_cases" (
   "req_proceed_filed" TEXT,
   "req_proceed_party" TEXT,
   "req_proceed_withdrawn" TEXT,
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)    
+  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id)    
 );
 CREATE TABLE IF NOT EXISTS "case_group" (
 "r_case_group_id" TEXT  NOT NULL PRIMARY KEY,
@@ -111,7 +126,7 @@ CREATE TABLE IF NOT EXISTS "dismissal" (
   "unit_id" TEXT,
   "action_sequence" INTEGER,
   "date_letter_issued" TEXT,
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)  
+  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id)  
 );
 CREATE TABLE IF NOT EXISTS "election" (
 "election_id" TEXT NOT NULL PRIMARY KEY,
@@ -145,7 +160,7 @@ CREATE TABLE IF NOT EXISTS "election_tally" (
   "num_against_inclusion" INTEGER,
   "num_sustained_challenges" INTEGER,
   PRIMARY KEY (unit_id, election_id, tally_id),
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number),
+  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id),
   FOREIGN KEY (election_id) REFERENCES election(election_id)  
 );
 CREATE TABLE IF NOT EXISTS "elect_agreement" (
@@ -154,7 +169,7 @@ CREATE TABLE IF NOT EXISTS "elect_agreement" (
   "action_sequence" INTEGER,
   "date_approved" TEXT,
   "election_agreement_type" TEXT,
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)  
+  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id)  
 );
 CREATE TABLE IF NOT EXISTS "elect_certification" (
 "election_id" TEXT,
@@ -184,7 +199,7 @@ CREATE TABLE IF NOT EXISTS "elect_scheduled" (
   "date_eligible" TEXT,
   "election_place" TEXT,
   "additional_languages" TEXT,
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)  
+  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id)  
 );
 CREATE TABLE IF NOT EXISTS "elect_votes_for" (
 "r_case_number" TEXT,
@@ -280,7 +295,7 @@ CREATE TABLE IF NOT EXISTS "post_elect_hearing" (
   "hearing_city" TEXT,
   "hearing_state" TEXT,
   "hearing_address" TEXT,
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number),
+  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id),
   FOREIGN KEY (election_id) REFERENCES election(election_id)  
 );
 CREATE TABLE IF NOT EXISTS "post_elect_rd_act" (
@@ -303,7 +318,7 @@ CREATE TABLE IF NOT EXISTS "post_elect_rd_act" (
   "date_ho_report" TEXT,
   "ho_report_directed" TEXT,
   "exceptions_due_date" TEXT,
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number),
+  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id),
   FOREIGN KEY (election_id) REFERENCES election(election_id)    
 );
 CREATE TABLE IF NOT EXISTS "pre_elect_board_act" (
@@ -340,7 +355,7 @@ CREATE TABLE IF NOT EXISTS "pre_elect_hearing" (
   "hearing_city" TEXT,
   "hearing_state" TEXT,
   "hearing_address" TEXT,
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)  
+  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id)  
   
 );
 CREATE TABLE IF NOT EXISTS "pre_elect_rd_bb" (
@@ -349,7 +364,7 @@ CREATE TABLE IF NOT EXISTS "pre_elect_rd_bb" (
   "action_sequence" INTEGER,
   "blue_book_code" TEXT,
   "recurrence" INTEGER,
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)  
+  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id)  
   
 );
 CREATE TABLE IF NOT EXISTS "pre_elect_rd_decision" (
@@ -371,7 +386,7 @@ CREATE TABLE IF NOT EXISTS "pre_elect_rd_decision" (
   "rd_recon_deter_date" TEXT,
   "brief_due_date" TEXT,
   "review_due_date" TEXT,
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)  
+  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id)  
   
 );
 CREATE TABLE IF NOT EXISTS "pre_elect_rd_issues" (
@@ -380,7 +395,7 @@ CREATE TABLE IF NOT EXISTS "pre_elect_rd_issues" (
   "action_sequence" INTEGER,
   "recurrence" INTEGER,
   "issue_code" TEXT,
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)    
+  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id)    
 );
 CREATE TABLE IF NOT EXISTS "reopened_case" (
 "r_case_number" TEXT,
@@ -412,6 +427,26 @@ CREATE TABLE IF NOT EXISTS "withdrawal" (
   "action_sequence" INTEGER,
   "withdrawal_approved_date" TEXT,
   "with_prejudice_flag" TEXT,
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)  
+  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id)  
   
+);
+CREATE TABLE IF NOT EXISTS "bargaining_unit" (
+"r_case_number" TEXT,
+  "unit_id" TEXT,
+  "bargaining_unit_code" TEXT,
+  "bargaining_unit_scope" TEXT,
+  "num_employees_determined" INTEGER,
+  "unit_city" TEXT,
+  "unit_state" TEXT,
+  "unit_county" INTEGER,
+  "description_determined" TEXT,
+  PRIMARY KEY (r_case_number, unit_id),
+  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)
+);
+
+CREATE TABLE IF NOT EXISTS "part_variant" (
+"r_case_number" TEXT,
+  "participant_id" INTEGER,
+  "variant_name" TEXT,
+  FOREIGN KEY (r_case_number, participant_id) REFERENCES participant(r_case_number, participant_id)  
 );
