@@ -1,4 +1,4 @@
-# Case files and code for NLRB union representation elections, 1984-2010
+# Case files and code for NLRB union representation elections, 1999-2010
 
 This repository [has copies of publicly available files](./raw) from the National Labor Relations Board, holding closed-case records from the NLRB's various case-tracking databases. The repository also contains code to turn those files into a [sqlite database](https://labordata.github.io/nlrb-cats/nlrb.sqlite.zip).
 
