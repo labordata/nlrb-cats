@@ -11,6 +11,5 @@ To build the database yourself run the Makefile:
 This data and code is just a refactor of the work done by [JP Ferguson](https://github.com/jpfergongithub/nlrb-cats). He describes the data in [some detail on his blog](http://jpferguson.net/project/nlrb_rcase/).
 
 ## Data Notes
-The source `R_BARGAINING_UNIT` tables duplicate the `R_CASE` table, so we are
-missing data on the second, third, and higher bargaining units if they were
-part of a NLRB case.
+The source `R_BARGAINING_UNIT` tables duplicate the `R_CASE` table, so we pull
+that table from `CATS_R_CASE_Data.zip` which has about one year less data than the main source `R_CATS_FINAL_DATA.zip`.
