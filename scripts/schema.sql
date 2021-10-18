@@ -430,19 +430,6 @@ CREATE TABLE IF NOT EXISTS "withdrawal" (
   FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id)  
   
 );
-CREATE TABLE IF NOT EXISTS "bargaining_unit" (
-"r_case_number" TEXT,
-  "unit_id" TEXT,
-  "bargaining_unit_code" TEXT,
-  "bargaining_unit_scope" TEXT,
-  "num_employees_determined" INTEGER,
-  "unit_city" TEXT,
-  "unit_state" TEXT,
-  "unit_county" INTEGER,
-  "description_determined" TEXT,
-  PRIMARY KEY (r_case_number, unit_id),
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)
-);
 
 CREATE TABLE IF NOT EXISTS "part_variant" (
 "r_case_number" TEXT,
