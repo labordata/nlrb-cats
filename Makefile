@@ -70,6 +70,7 @@ nlrb.sqlite : R_ACTION.csv R_BARGAINING_UNIT.csv R_BLOCK.csv		\
 	done
 	sqlite3 $@ < scripts/schema.sql
 	sqlite3 $@ < scripts/transform.sql
+	echo 'create index idx_nlrb_case_case_type on nlrb_case (case_type)' | sqlite3 $@
 
 %.csv : %.csv.badheaders
 	cat $< | awk 'NR==1{$$0=tolower($$0)}1' > $@
