@@ -168,6 +168,7 @@ nlrb.sqlite : R_ACTION.csv R_BARGAINING_UNIT.csv R_BLOCK.csv		\
 	sqlite-utils add-foreign-key $@ pre_elect_hearing p_p_determination l_r_preelec_hear_det_p_p determination_request_p_p
 	sqlite-utils transform $@ l_r_action_fields --pk action_table_code --pk action_field_code
 
+
 L_R_ACTION_FIELDS.csv : L_R_ACTION_FIELDS.csv.badheaders
 	cat $< | awk 'NR==1{$$0=tolower($$0)}1' | sed '1 s/table_name/tbl_name/' > $@
 
