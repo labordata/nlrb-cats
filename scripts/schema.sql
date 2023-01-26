@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS "nlrb_case" (
   "r_case_number" TEXT NOT NULL PRIMARY KEY,
   "case_type" TEXT,
   "status" TEXT,
-  "nlrb_office_id" INTEGER,
+  "nlrb_office_id" TEXT,
   "docket_num" INTEGER,
   "inquiry_id" TEXT,
   "case_name" TEXT,
@@ -29,11 +29,11 @@ CREATE TABLE IF NOT EXISTS "bargaining_unit" (
   "unit_county" INTEGER,
   "description_determined" TEXT,
   PRIMARY KEY (r_case_number, unit_id),
-  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number)
+  FOREIGN KEY (r_case_number) REFERENCES nlrb_case(r_case_number),
+  FOREIGN KEY (unit_county, unit_state) REFERENCES l_county(county_code, state)
 );
 
 CREATE TABLE IF NOT EXISTS "action" (
-  "action_id" INTEGER PRIMARY KEY AUTOINCREMENT,
   "r_case_number" TEXT,
   "unit_id" TEXT,
   "action_sequence" INTEGER,
@@ -43,7 +43,8 @@ CREATE TABLE IF NOT EXISTS "action" (
   "action_date" TEXT,
   "date_entered" TEXT,
   "action_control" INTEGER,
-  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id)  
+  FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id),
+  FOREIGN KEY (action_table_code, action_field_code) REFERENCES l_r_action_fields(action_table_code, action_field_code)
 );
 CREATE TABLE IF NOT EXISTS "block" (
   "r_case_number" TEXT,
@@ -161,7 +162,7 @@ CREATE TABLE IF NOT EXISTS "election_tally" (
   "num_sustained_challenges" INTEGER,
   PRIMARY KEY (unit_id, election_id, tally_id),
   FOREIGN KEY (r_case_number, unit_id) REFERENCES bargaining_unit(r_case_number, unit_id),
-  FOREIGN KEY (election_id) REFERENCES election(election_id)  
+  FOREIGN KEY (election_id) REFERENCES election(election_id)
 );
 CREATE TABLE IF NOT EXISTS "elect_agreement" (
 "r_case_number" TEXT,
