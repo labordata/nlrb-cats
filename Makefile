@@ -85,6 +85,7 @@ nlrb.sqlite : R_ACTION.csv R_BARGAINING_UNIT.csv R_BLOCK.csv		\
 	sqlite-utils transform $@ l_naics_industry --pk naics_industry_code --pk naics_industry_group --pk naics_subsector --pk naics_sector
 	sqlite-utils transform $@ l_naics_us_industry --pk naics_us_industry_code --pk naics_industry_code --pk naics_industry_group --pk naics_subsector --pk naics_sector
 	sqlite-utils transform $@ l_naics_code --pk naics_code
+	sqlite-utils add-foreign-key $@ l_naics_code naics_sector l_naics_sector naics_sector
 	sqlite-utils add-foreign-key $@ nlrb_case naics_code l_naics_code naics_code
 	sqlite-utils transform $@ l_nlrb_branch --pk branch
 	sqlite-utils transform $@ l_nlrb_district --pk district
@@ -95,7 +96,7 @@ nlrb.sqlite : R_ACTION.csv R_BARGAINING_UNIT.csv R_BLOCK.csv		\
 	sqlite-utils add-foreign-keys $@ l_nlrb_office region l_nlrb_region region l_nlrb_office branch l_nlrb_branch branch l_nlrb_office division l_nlrb_division division l_nlrb_office district l_nlrb_district district l_nlrb_office office_type l_nlrb_office_type office_type
 	sqlite-utils convert $@ nlrb_case nlrb_office_id '"{:0>2}".format(value)'
 	sqlite-utils add-foreign-key $@ nlrb_case nlrb_office_id l_nlrb_office nlrb_office_id
-	sqlite-utils add-foreign-key $@ transfer_history former_case_number nlrb_case r_case_number
+	sqlite-utils add-foreign-key $@ transfer_history new_case_number nlrb_case r_case_number
 	sqlite-utils transform $@ l_organization --pk organization_id
 	sqlite-utils add-foreign-key $@ l_organization_name organization_id l_organization organization_id
 	sqlite-utils transform $@ l_parti_type --pk parti_type
@@ -147,8 +148,8 @@ nlrb.sqlite : R_ACTION.csv R_BARGAINING_UNIT.csv R_BLOCK.csv		\
 	sqlite-utils add-foreign-keys $@ post_elect_rd_act eot_determination l_r_postelec_det_eot post_elect_determ_eot post_elect_rd_act ho_report_directed l_r_postelec_ho_directed ho_report_directed post_elect_rd_act rd_action_type l_r_rd_action_type rd_action_type post_elect_rd_act rd_action_determination l_r_rd_action_det rd_action_determination
 	sqlite-utils transform $@ l_r_preelec_det_eot --pk determination_eot
 	sqlite-utils transform $@ l_r_preelec_rd_dec_type --pk rd_decision_type
-	sqlite-utils transform $@ l_r_preelec_rd_recon --pk rd_reconsider
-	sqlite-utils add-foreign-keys $@ pre_elect_rd_decision determination_eot l_r_preelec_det_eot determination_eot pre_elect_rd_decision rd_decision_type l_r_preelec_rd_dec_type rd_decision_type pre_elect_rd_decision rd_recon_deter l_r_preelec_rd_recon rd_reconsider
+	sqlite-utils transform $@ l_r_preelec_rd_recon --pk rd_reconsider_deter
+	sqlite-utils add-foreign-keys $@ pre_elect_rd_decision determination_eot l_r_preelec_det_eot determination_eot pre_elect_rd_decision rd_decision_type l_r_preelec_rd_dec_type rd_decision_type pre_elect_rd_decision rd_recon_deter l_r_preelec_rd_recon rd_reconsider_deter
 	sqlite-utils transform $@ l_r_preelec_rd_issue_dec --pk issue_code
 	sqlite-utils add-foreign-key $@ pre_elect_rd_issues issue_code l_r_preelec_rd_issue_dec issue_code
 	sqlite-utils transform $@ l_r_reason_transfer --pk reason_transfer
@@ -167,7 +168,6 @@ nlrb.sqlite : R_ACTION.csv R_BARGAINING_UNIT.csv R_BLOCK.csv		\
 	sqlite-utils transform $@ l_r_preelec_hear_det_p_p --pk determination_request_p_p
 	sqlite-utils add-foreign-key $@ pre_elect_hearing p_p_determination l_r_preelec_hear_det_p_p determination_request_p_p
 	sqlite-utils transform $@ l_r_action_fields --pk action_table_code --pk action_field_code
-
 
 L_R_ACTION_FIELDS.csv : L_R_ACTION_FIELDS.csv.badheaders
 	cat $< | awk 'NR==1{$$0=tolower($$0)}1' | sed '1 s/table_name/tbl_name/' > $@
