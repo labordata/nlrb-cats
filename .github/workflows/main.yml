@@ -9,10 +9,10 @@ on:
 jobs:
   build-database:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/labordata/nlrb-cats/nlrb:1.8
     steps:
       - uses: actions/checkout@v2
+      - name: install requirements
+        run: pip install -r requirements.txt
       - name: build database
         run: |
           make -j 4 nlrb.sqlite

@@ -161,6 +161,9 @@ L_%_ACTION_FIELDS.csv : L_%_ACTION_FIELDS.csv.badheaders
 C_%.xml : raw/C_CATS_FINAL_DATA.zip
 	unzip -p $< $@ > $@
 
+CL_C_%.xml : raw/C_CATS_FINAL_DATA.zip
+	unzip -p $< $@ > $@
+
 R_%.xml : raw/R_CATS_FINAL_DATA.zip
 	unzip -p $< $@ > $@
 
