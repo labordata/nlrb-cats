@@ -16,14 +16,25 @@ jobs:
       - name: build database
         run: |
           make -j 4 nlrb.sqlite
-      - name: setup directory
+      - name: prep file for release
         run: |
-          mkdir public
           zip nlrb.sqlite.zip nlrb.sqlite
-          mv nlrb.sqlite.zip public
       - name: Github Pages Deploy
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         uses: peaceiris/actions-gh-pages@v3
         with:
            github_token: ${{ secrets.GITHUB_TOKEN }}
            publish_dir: ./public
+
+      - name: release
+        uses: WebFreak001/deploy-nightly@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # automatically provided by github actions
+        with:
+          upload_url: https://uploads.github.com/repos/labordata/nlrb-cats/releases/90435970/assets{?name,label}
+          release_id: 90435970
+          asset_path: ./nlrb.sqlite.zip # path to archive to upload
+          asset_name: nlrb.sqlite.zip # name to upload the release as, use $$ to insert date (YYYYMMDD) and 6 letter commit hash
+          asset_content_type: application/zip # required by GitHub API
+          max_releases: 7 # optional, if there are more releases than this matching the asset_name, the oldest ones are going to be deleted
+           
